@@ -1,0 +1,141 @@
+How did viewing a diff between two versions of a file help you see the bug that
+was introduced?
+
+    2016/8/12
+    I had only to search the diff to find the bug instead of searching all over
+    the file.
+    How to view diffs:
+        windows: FC file1 file2
+        linux, mac: diff -u file1 file2
+    How to launch atom from Git bash:
+        edit C:\Users\Masaaki\.bashrc and add a line below.
+        alias atom="C:/Users/Masaaki/AppData/Local/atom/app-1.9.8/atom.exe"
+
+How could having easy access to the entire history of a file make you a more
+efficient programmer in the long term?
+
+    When somethings go wrong, I can quickly go back to the previous version
+    which has no bugs and it makes my programming efficient.
+    I can do version control by saving manual copies or using Apps which have
+    version control systems like Drop box, Google Docs, Wikipedia and Git.
+    How to use Git to view history:
+        Type the commands below.
+            cd version-control/asteroids/
+            git log
+        Each commit has ID, Author, Date and message associated with it.
+        To compare two versions, use the command below.
+            git diff ID1 ID2
+    How often to commit:
+        A good rule of thumb is to make one commit per logical change.
+        For example, if you fixed a typo, then fixed a bug in a separate part
+        of the file, you should use one commit for each change since they are
+        logically separate. If you do this, each commit will have one purpose
+        that can be easily understood. Git allows you to write a short message
+        explaining what was changed in each commit, and that message will be
+        more useful if each commit has a single logical change.
+
+What do you think are the pros and cons of manually choosing when to create a
+commit, like you do in Git, vs having versions automatically saved, like Google
+docs does?
+
+    I think one of the pros is that I can control the timing of a commitment,
+    and one of the cons is that it is possible to miss the timing when I should
+    create a commit.
+    Tracking across multiple files:
+        Git uses repository to track multiple files together.
+        Type the command below to see some statistics about which files have
+        changed in each commit. Green + signs indicate additions and red - signs
+        indicate delitions.
+            git log --stat
+
+
+Why do you think some version control systems, like Git, allow saving multiple
+files in one commit, while others, like Google Docs, treat each file separately?
+
+    I think it does because it is convenient to be able to track some files
+    together which are mutually related and save them at one time.
+
+    Installing Git:
+        git --version
+        git help <command>
+    Cloning and Exploring the Repo:
+        We don't just want to download the actual files. Instead, we want to
+        download the entire history. Git has a command allowing you to copy an
+        entire repository from one computer to another.
+        To clone a repository, run git clone followed by a space and the
+        repository URL.
+        Use the following url to clone the Asteroids repository:
+        https://github.com/udacity/asteroids.git
+            git clone https://github.com/udacity/asteroids.git
+        To stop viewing git log output, press q (which stands for quit).
+        To get colored diff output, run
+            git config --global color.ui auto
+        If it is easier, you may enter the first four or more characters of
+        the commit ID rather than pasting the entire ID.
+
+How can you use the commands git log and git diff to view the history of files?
+
+    I can use the command 'git log' to see the entire history of a repository
+    and to get information about commitments: IDs, messages etc..
+    I can use the command 'git diff 1st-id 2nd-id' to compare two versions
+    and check the difference of the two, the added lines and the deleted lines.
+
+    Git Errors and Warnings:
+        Should not be doing an octopus
+            Octopus is a strategy Git uses to combine many different versions of
+            code together. This message can appear if you try to use this
+            strategy in an inappropriate situation.
+        You are in 'detached HEAD' state
+            HEAD is what Git calls the commit you are currently on. You can
+            “detach” the HEAD by switching to a previous commit. Despite what
+            it sounds like, it’s actually not a bad thing to detach the HEAD.
+            Git just warns you so that you’ll realize you’re doing it.
+        Panic! (the 'impossible' happened)
+            This is a real error message, but it’s not output by Git. Instead
+            it’s output by GHC, the compiler for a programming language called
+            Haskell. It’s reserved for particularly surprising errors!
+    Checking Out Old Versions Of Code:
+        ->troubleshooting_guide.pdf
+        You can check out or 'activate' a previous version using the following
+        command:
+            git checkout ID
+        You can use the commit ID of the most recent commit to return to the
+        latest commit after checking out an older commit. If you don't know
+        the commit ID, run
+            git reflog
+        which shows the history of checkout. (git log only shows commits that 
+        were made before the commit you have currently checked out.)
+
+How might using version control make you more confident to make changes that
+could break something?
+
+    When I use version control, I can return to any commit easily later so that
+    I am able to be more confident to make changes that might break something.
+
+    Setting Up Your Workspace on Windows
+    (on Ubuntu Git Bash->Terminal, .bash_profile->.profile, Change Atom alias):
+        Changing background color
+        Downloading necessary files
+            -Save this file in your home directory with the name git-completion.bash.
+            -Save this file in your home directory with the name git-prompt.sh.
+            -Download bash_profile_course from the Downloadables section.
+            -If you already have a file in your home directory named .bash_profile,
+            copy the content from bash_profile_course and paste it at the bottom
+            of .bash_profile. Otherwise, move bash_profile_course to your home
+            directory and rename it to .bash_profile. (If you're curious to
+            learn more about how bash prompts work, see this page.
+            http://www.cyberciti.biz/tips/howto-linux-unix-bash-shell-setup-prompt.html)
+        Making Git configurations
+            Run the following Git configuration commands.
+                git config --global core.editor "atom --wait"
+                git config --global push.default upstream
+                git config --global merge.conflictstyle diff3
+        Make sure you can start your editor from Git Bash
+            Add the following line to your .bash_profile.
+                alias atom="C:/Users/Masaaki/AppData/Local/atom/app-1.9.8/atom.exe"
+        Restart Git Bash
+
+Now that you have your workspace set up, what do you want to try using Git for?
+
+    I want to proceed with relatively larger projects than I have so far and
+    improve my programming skill efficiently using Git.
