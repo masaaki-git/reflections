@@ -1,0 +1,90 @@
+    Initializing a Repository
+        Git repositories and directories
+            Each Git repository is tied to a specific directory - the directory
+            where you ran git init. Only files from that directory (and
+            subdirectories inside that directory) will be contained in that
+            repository, and you can have different repositories in different
+            directories.
+            Note: it's often the case that a Git repository in some directory
+            will only contain, or track, some of the files in that directory,
+            rather than all of them. You'll see how this works later this lesson.
+        git init
+            Create a new repository. Make a directory a repository. But Git
+            doesn't create any commit because commits should not be done
+            automatically but manually by users and Git doesn't know which files
+            in the directory should be tracked. So git log shows "fatal: bad
+            default revision 'HEAD'" because there isn't any commit yet.
+        git status
+            Show which files have been changed since the last commit.
+
+
+What happens when you initialize a repository? Why do you need to do it?
+
+    .git directory that contains a bunch of metadata about the history of the
+    repository which is the difference between repositories and other
+    directories will be created. I need to do it because I want to use version
+    control.
+
+    Staging Area:
+        git add <file1>
+            Add file1 to the staging area which is the intermediate area
+            between a working directory and a repository and which contains
+            files you want to commit. When you run git status, file1 moves from
+            'Untracked files' to 'Changes to be committed'.
+                git add lesson_1_reflections.txt
+
+How is the staging area different from the working directory and the repository?
+What value do you think it offers?
+
+    The staging area is the intermediate area between the working directory and
+    the repository and it contains files which you want to commit. It helps you
+    make one commit have a single logical change.
+
+    Writing Good Commit Message:
+        git commit
+            You can make a commit to the repository.
+            You'll need to write a commit message describing your changes. If
+            you followed the instructions in the "Setting Up Your Workspace"
+            video for your platform near the end of Lesson 1, the editor you
+            chose will appear as soon as you run git commit and allow you to
+            write a commit message. If you get an error message, you should try
+            revisiting the instructions in Lesson 1 and make sure your text
+            editor is set up properly.
+                git add -> git status -> git commit
+                git commit
+                message: Add lesson 1 reflections
+        git commit -m "Commit message"
+            You can also specify a commit message via the command line by
+            running git commit -m "Commit message" instead of just git commit.
+        Commit message style:
+            While commit message style varies from person to person, this style
+            guide describes some common best practices when writing commit
+            messages. http://udacity.github.io/git-styleguide/:
+                type: subject
+
+                body(optional)
+
+                footer(optional)
+            The type
+                feat: a new feature
+                fix: a bug fix
+                docs: changes to documentation
+                style: formatting, missing semi colons, etc; no code change
+                refactor: refactoring production code
+                test: adding tests, refactoring test; no production code change
+                chore: updating build tasks, package manager configs, etc; no
+                       production code change
+
+How can you use the staging area to make sure you have one commit per logical
+change?
+
+What are some situations when branches would be helpful in keeping your history
+organized? How would branches help?
+
+How do the diagrams help you visualize the branch structure?
+
+What is the result of merging two branches together? Why do we represent it in
+the diagram the way we do?
+
+What are the pros and cons of Git’s automatic merging vs. always doing merges
+manually?
