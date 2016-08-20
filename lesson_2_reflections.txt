@@ -1,5 +1,5 @@
-    Initializing a Repository
-        Git repositories and directories
+    Initializing a Repository:
+        Git repositories and directories:
             Each Git repository is tied to a specific directory - the directory
             where you ran git init. Only files from that directory (and
             subdirectories inside that directory) will be contained in that
@@ -74,17 +74,176 @@ What value do you think it offers?
                 test: adding tests, refactoring test; no production code change
                 chore: updating build tasks, package manager configs, etc; no
                        production code change
+    git diff Revisited:
+        git diff <ID1> <ID2>
+            Show the difference between the two commits of the repository.
+        git diff
+            Show the difference between the working directory and the staging
+            area.
+        git diff --staged
+            Show the difference between the staging area and thd repository.
+        git reset --hard
+            Discard any changes in either the working directory or the staging
+            area. When you ever run this command, you need to be very careful
+            because you can't get those changes back.
+    Commit the Bug Fix:
+        cd version-control/asteroids
+        Leave 'detached HEAD' state: git checkout master
+        Fix the delay bug:
+            In game.js find the statement if (this.delayBeforeBullet <= 0) {
+            (should be on line 423). On the next line, insert
+            this.delayBeforeBullet = 10;
+        Stage your change: git add game.js
+        Commit your change: git commit -> message: Add delay back to bullets
 
 How can you use the staging area to make sure you have one commit per logical
 change?
 
+    I can do it in the way that I add only files related to the logical change
+    to the staging area at a time and then commit. This lead to one commit per
+    logical change.
+
+    Branches:
+        The way to manage multiple versions. Branchs are labels attached to the
+        latest commits of the multiple versions. master is the official branch.
+        You attach other branch labels to some commits if necessary. When making
+        a new commit, the branch label automatically updates to the new commit.
+        It is also possible to have multiple branch labels attached to a single
+        commit. In that situation, when you make a new commit, only the branch
+        label that you have checked out will update and the others left alone.
+    Making a Branch (Create an easy mode):
+        cd version-control/asteroids
+        git branch -> Show branches.
+        git branch easy-mode -> Make a new branch named easy-mode.
+        git checkout easy-mode -> Activate the easy-mode branch.
+        Change game.js. Search 'fragments', change for-loop from i<3 to i<2.
+        git add game.js
+        git commit -> message: Make asteroids split into 2 smaller pieces
+                                instead of 3.
+
 What are some situations when branches would be helpful in keeping your history
 organized? How would branches help?
 
+    The situations where I want to make multiple versions, for example, to add
+    experimental features which I am not sure will work well or change something
+    for different users. When I use branches, I can manage various versions
+    without changing the master branch.
+
+    Branches for Collaboration:
+        cd version-control/asteroids
+        git chechout coins -> coins is a remote branch other people created.
+        git log
+        git checkout master
+        git log
+        git log --graph --oneline master coins -> Visualize the branch structure
+    Reachability:
+        Log starts with the current commit and traces back until it gets to a
+        commit that doesn't have a parent. (This will generally be the initial
+        commit.) There may be two points where there's no way to get from one
+        to the other. There may be a point that isn't actually reachable by any
+        of the current branches.
+    Detached HEAD Revisited:
+        See detached head message. git checkout <ID>
+        If you make a new commit in a detached head, the new commit isn't
+        included in any branches and it isn't reachable by any of the branches.
+        If you want to retain commits, create a new branch.
+        git checkout -b new_branch_name
+        = (git brach new_branch_name) + (git checkout new_branch_name)
+
 How do the diagrams help you visualize the branch structure?
+
+    The diagrams show how each commit is connected, where branch labels are
+    attached, reachability of each commit, where each branch is split from other
+    branches. All of these things help me visualize the branch structure.
+
+    Combining Simple Files Using Original:
+        The common parts of the two files will be retained. The changes of the
+        two files from the original file will also be retained.
+    Merging Coins into Master:
+        If a branch is deleted and leaves some commits unreachable from existing
+        branches, those commits will continue to be accessible by commit id,
+        until Git’s garbage collection runs. This will happen automatically
+        from time to time, unless you actively turn it off. You can also run
+        this process manually with git gc.
+    Merging on the Command Line:
+        cd version-control/asteroids
+        git branch -> coins, easy-mode, * master
+        git merge master coins -> message: Merge branch 'coins'
+        git log -> The commits are sorted by the time they were created. So the
+                    previous commit is not necessarily the parents of the commit.
+        git show <ID> -> Show the diff between the commit and the parent without
+                        actually knowing what the parent was.
+        git branch -d coins -> Delete the branch coins label. This won't delete
+                    the commits in the branch, it will only delete the label.
+        Make coins yellow:
+        git show 3884 -> this.color = 'yellow'; this.solid = true;
+        git log --graph --oneline
+        git diff b067 354d -> Compare the latest commit before the coins branch
+                                and the latest commit with coins
+        Open game.js -> Search Coin -> Add this.color = 'yellow'; and
+                                        this.solid = true; at line 727.
+        git diff
+        git add game.js
+        git commit -> message: Make coins yellow
 
 What is the result of merging two branches together? Why do we represent it in
 the diagram the way we do?
 
+    The result is a new commit which combines the commit before the two branches
+    diverged and the changes added in the two branches after the commmit. The
+    latest commits of the two old branches will be the parents of the new commit
+    of the new branch. So we can represet the result in the diagram the way we
+    do. Once two branches are merged together, all the commits in both branches
+    will be able to be reached from the new branch.
+
+    Merge Conflicts:
+        Can we always merge automatically?
+        If a part is changed differently in two branches from the original, we
+        can't decide which version should be retained.
+    Conflct Detection:
+        Git asks the user whenever there's any ambiguity.
+    Update Easy Mode:
+        Master has updated since the easy-mode branch was created. In this case,
+        it has the addition of coins, which you might like to include in the
+        easy-mode branch. In general, it’s very common that if you make a branch,
+        either an experimental branch or to work on a new feature, you want to
+        periodically merge master into that branch. This is because master
+        usually contains the official version of the code, and it’s common to
+        want experimental changes to include all of the changes to master.
+    Resolving Merge Conflicts:
+        cd version-control/asteroids
+        git checkout easy-mode
+        git merge master easy-mode -> Merge conflict in game.js -> Need to
+            resolve the conflict.
+        atom game.js -> git represents conflicts using special lines.
+                        <<<<<<< HEAD
+                        (The top section)
+                        ||||||| merged common ancestors
+                        (The middle section: the original version)
+                        =======
+                        (The bottom section: master)
+                        >>>>>>> master
+        Resolve merge conflicts -> That one set of changes will be made by me
+        and the other by someone else. So, I might need to go talk to that
+        person. But first, I always try to understand what they were doing by
+        looking at the changes they made. -> Delete the top and the middle
+        section and the special lines and make HEAD's change to the function of
+        the bottom section (change for-loop from i<3 to i<2).
+    Committing the Conflict Resolution:
+        git status -> both modified: game.js
+        git add game.js
+        git status -> All conflicts fixed but you are still merging
+        git commit
+            -> message: Merge branch 'master' into easy-mode
+
+                        Conflicts:
+                            game.js
+        git log
+        git log -n 1
+    Concept Map: branch, merge:
+
 What are the pros and cons of Git’s automatic merging vs. always doing merges
 manually?
+    As long as no conflicts happen, Git's automatic merging is very easy and
+    safe. But, when some conflicts happen, Git cannot merge automatically any
+    longer and I need to do merges manually.
