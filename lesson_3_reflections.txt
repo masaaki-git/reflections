@@ -1,0 +1,64 @@
+    Create a GitHub account:
+        https://github.com/
+    Set up Password Caching:
+        https://help.github.com/articles/caching-your-github-password-in-git/
+        With Git for Windows, running the following in the command line will
+        store your credentials:
+            git config --global credential.helper wincred
+    Keeping Repositories in Sync:
+    Add a Remote:
+        Click the plus button and select new repository. Name the repositories
+        reflections and leave it as public. (If you make the repository before
+        you had created any content, initialize the repository with a README
+        and start it with one commit because you can't clone the repository
+        with no commit.) Add the repository as a remote to your reflections
+        repository on your local computer.
+        git remote  : view all the current remotes
+        git remote add <name you want to use> <URL for the remote>
+            : Create a remote. You can find the URL on the GitHub page. HTTPS
+            is recommended.
+        git remote add origin https://github.com/masaaki-git/reflections.git
+        git remote
+        git remote -v :verify that the URL was added correctly. V stands for
+            verbose and means that git remote will output more information,
+            fetch and push.
+        git push <the remote> <the name of the local branch>
+            : send your changes to the remote.
+        git push origin master
+    Editing Files on GitHub:
+        Click the plus sign to create a new file. Create a file for the lesson 3
+        reflections. Enter the first reflection prompt and a commit message.
+        'Create file for lesson 3 and add new reflection'. Click Commit new file.
+
+When would you want to use a remote repository rather than keeping all your work
+local?
+
+    Using a remote repository is useful when I want to share my projects with
+    other people. It is also useful for group projects which many people
+    participate in. In addition a remote repository can be used as a backup of
+    my project.
+
+Why might you want to always pull changes manually rather than having Git
+automatically stay up-to-date with your remote repository?
+
+    Fill in your answer here
+
+Describe the differences between forks, clones, and branches.  When would you
+use one instead of another?
+
+    Fill in your answer here
+
+What is the benefit of having a copy of the last known state of the remote
+stored locally?
+
+    Fill in your answer here
+
+How would you collaborate without using Git or GitHub?  What would be easier,
+and what would be harder?
+
+    Fill in your answer here
+
+When would you want to make changes in a separate branch rather than directly in
+master?  What benefits does each approach have?
+
+    Fill in your answer here
