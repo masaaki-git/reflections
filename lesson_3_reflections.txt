@@ -38,27 +38,304 @@ local?
     participate in. In addition a remote repository can be used as a backup of
     my project.
 
+    Pulling Changes:
+        git pull <the remote> <the remote branch you want to pull>
+            : send the remote changes to the local repository
+        git pull original master
+
 Why might you want to always pull changes manually rather than having Git
 automatically stay up-to-date with your remote repository?
 
-    Fill in your answer here
+    The remote repository might be changed by other people. So it is better that
+    I can choose the changes that I need and add them to my local repository
+    manually. If my local repository is updated automatically by Git, the
+    changes that I don't need might be added to my local repository unwillingly.
+
+    Forking a Repository:
+        Make a copy of somebody else's repository directly on the GitHub servers
+        without pulling down the code to your local machine first. You can fork
+        an existing repository and have it appear under your own account with
+        just a single click. A fork is just a clone that GitHub makes for you
+        on their own machines.
+    Fork the Recipes Repository:
+        Visit Larry's repository on GitHub https://github.com/LarryMad/recipes.
+        Click the fork button. Then a copy of the repository is made on my own
+        GitHub profile. Clone the fork to edit on my own computer.
+            cd version-control
+            git clone https://github.com/masaaki-git/recipes.git
+        When you clone a repository, Git automatically sets up a remote pointing
+        to the repository you cloned from.
+            git remote -v
+        To collaborate with others, give them permission to push to the
+        repository.
+            Settings Tab -> Collaborators -> Enter GitHub username
+    Push Changes to the Recipes Repository:
+        Add a new recipe(eggonrice-recipe.txt) to the repository
+            git status
+            git add eggonrice-recipe.txt
+            git status
+            git commit -> message: Add egg on rice recipe
+            git log
+            git remote
+            git push origin master
+        Where was your commit?
+        Before you ran git push, your change should have only existed locally
+        via git log. Commits will not automatically be shared to remotes - you
+        have to manually push your branch if you want to share changes.
+        After you ran git push, your change should have existed locally and on
+        your fork. It should not have existed on Larry's repository, which is
+        the repository you forked. The reason you forked in the first place is
+        because you don't have permission to change Larry's repository!
 
 Describe the differences between forks, clones, and branches.  When would you
 use one instead of another?
 
-    Fill in your answer here
+    Forks are the copies of repositories on GitHub servers which are made on
+    GitHub servers. Using forks, you can not only edit repositories on GitHub
+    servers without changing the original ones, but also share the changes you
+    made on the Forks with other people because forks are open to them on GitHub
+    and GitHub creates links between the original repositories and the forks.
+    Clones are the copies of repositories which are made on your own computer.
+    Using clones, you can edit repositories without changing the original ones.
+    You can also push the changes you made to the original repositories. But the
+    clones are not open to other people.
+    Branches are labels attached to different commits of a repository. Using
+    branches, you can refer to different versions of the repository easily.
+    Branches are not copies of some repositories.
+
+    Change the Chili Recipe:
+        Change chili-recipe.txt. Add Japanese pepper to chili.
+            cd version-control/recipes
+            git diff
+            git add chili-recipe.txt
+            git commit -> message: Add Japanese pepper to chili
+            git status -> Your branch is ahead of 'origin/master' by 1 commit.
+    Simulate Sarah's Changes:
+        Download sarah_changes.sh, which contains code to make it look like
+        Sarah has modified your fork on GitHub. Using Git Bash or your terminal,
+        cd to the directory where you've saved it. Then type the following
+        command.
+            bash sarah_changes.sh https://github.com/masaaki-git/recipes.git
+        Which commits exist where?
+        The commit by Larry adding the chili recipe should have been in both
+        places, since it was present in the original repository before you
+        forked it. Your commit adding a new spice should only have been present
+        locally, since you made the commit locally but didn't push. The commit
+        by Sarah removing cumin should only have been present on GitHub, since
+        Sarah made the change and pushed it to GitHub, but you didn't pull yet.
+    Updating Local Copies of Remote Branches:
+        cd version-control/recipes
+        git branch -a -> * master, remotes/origin/HEAD -> origin/master,
+                         remotes/origin/master
+        git fetch <the remote>
+        git fetch origin :
+            Update the local copy of the remote branch. Then you can use git log
+            and git diff to see what changes were introduced both on the local
+            and the remote repositories.
+        git log origin/master
+        git diff origin/master master
+    Merging the Changes Together:
+        git status
+        git merge master origin/master -> Automatic merge failed
+        Open the file and resolve the conflict.
+        git add chili-recipe.txt
+        git commit -> message: Merge remote-tracking branch 'origin/master'
+                                Conflicts:
+                                    chili-recipe.txt
+        git pull origin master : The same as git fetch and then git merge
+        git push origin master : push the merged version to GitHub
+        git status -> Your branch is up-to-date with 'origin/master'.
+    Fast-Forward Merges:
+        Fast-forward merges occur when you merge two commits where one commit is
+        an ancestor of the other.
 
 What is the benefit of having a copy of the last known state of the remote
 stored locally?
 
-    Fill in your answer here
+    By storing a copy of the last known state of the remote repository locally,
+    you can see the changes introduced both on the local and the remote
+    repositories, which makes it easy to merge the local branch and the remote
+    branch.
+
+    Making a Pull Request:
+        A workflow you can use to get feedback on your changes to the project
+        before you update the master branch: 1. Make the change locally on a
+        separate branch. 2. Push that change to the fork. Now the change is
+        shared on GitHub, so collaborators can see it, but it's not in the
+        master branch. If the collaborators find a problem with the change when
+        they review it, you won't have broken master. 3. Use pull request, a
+        feature of GitHub, which makes it easy for collaborators to see exactly
+        what you've changed and leave comments. 4. When you and collaborators
+        are both ready, you'll merge the change into the master branch.
+            cd version-control/recipes
+            git branch different-oil
+            git checkout different-oil
+        Change cake-recipe.txt from vegetable oil to canols(typo) oil.
+            git add cake-recipe.txt
+            git commit ->message: Use canola oil instead of vegetable oil
+            git push origin different-oil
+        You can see or choose the branch on GitHub by clicking on the branch
+        drop down which is ananlogous to running git branch or git checkout.
+        Go back to the main page, check out the new branch and click pull
+        request. By default, GitHub assumes you want to merge your changes into
+        the original repository. So, change the base fork to your own fork.
+        Click Create pull request. If you go back to the repository and scroll
+        to the right, you can see a list of all Pull requests.
+        Why is it called a pull request? It's because you are requesting that
+        collaborators pull your branch into the master branch.
+        Make sure that the pull request really looks good before actually doing
+        the merge. Find a typo. Instead of merging it, leave a comment on the
+        whole change or an inline comment, 'Looks like you misspelled "canola"!
+        Let me know when you've updated the change.'. If you had decided that
+        the change was good and ready to be pulled in, you could have pressed
+        the Merge pull request button. The button will only appear when the
+        merge could go through without a conflict. If the change would have
+        created a merge conflict, you would ask the person who requested it to
+        merge master into his/her branch first, so that you could see how he/she
+        resolves the conflict.
+    Updating a Pull Request:
+        Fix typo in cake-recipe.txt (canols -> canola).
+            git add cake-recipe.txt
+            git commit -> message: Fix typo in canola
+            git push origin different-oil
+        Pushing the branch automatically updates the pull request on GitHub.
+        Underneath the comment about the misspelling you can see the commit
+        fixing the typo.
+            Link to my pull request:https://github.com/masaaki-git/recipes/pull/1
 
 How would you collaborate without using Git or GitHub?  What would be easier,
 and what would be harder?
 
-    Fill in your answer here
+    I would collaborate using shared folders and creating a different file per
+    version. It would be easier that you or your collaborators need not know
+    Git or GitHub. It would be harder to know the history of the master version
+    and to do version controls without mistakes. So, it would also be harder to
+    proceed large projects.
+
+    Conflict Changes:
+        What happens when someone else makes changes that conflict with your
+        pull request? Either you or he/she will have to resolve the conflict.
+        Merge Sarah's request (more-oil branch) first. Confirm merge. Even if
+        you could have a fast-forward merge, merging with the button on GitHub
+        will always make a commit anyway even if no extra information is given
+        by making the merge commit.
+        Delete branch. (Since Sarah only created the more-oil branch in order to
+        make the pull request into master, it's safe to delete the branch.)
+        Go back to your pull request. It can't be automatically merged anymore
+        because merge conflicts occur when merging the master branch and your
+        branch. Rather than having you resolve the merge conflicts from the
+        browser, GitHub requires you to merge the changes on your own computer
+        and send update the pull request with the merged version.
+        In the collaborative environment it's often only acceptable to make
+        changes to master through pull request.
+    Updating Your Local Repository:
+            cd downloads/
+            bash sarah_changes_2.sh https://github.com/masaaki-git/recipes.git
+            cd version-control/recipes
+            git checkout master
+            git log
+            git pull origin master
+            git checkout different-oil
+            git merge master different-oil
+        Resolve the conflict keeping both changes. 3/4 cup canola oil
+            git add cake-recipe.txt
+            git commit
+            git push origin different-oil
+        Leave another comment. 'Please take anothre look'. Click Comment.
+    Merging a Pull Request:
+        Merge your pull request by pushing the Merge button.
+            git checkout master
+            git pull origin master
+            git log -n 1
+        Commit merging a pull request
+        After running git log -n 1, you should have seen output something like
+        this:
+            commit bc368511c6406028c77e2631f77c4d22a5da16d0
+            Merge: 79fff84 23d1775
+            Author: cbuckey
+            Date:   Tue Sep 30 18:50:28 2014 -0400
+
+                Merge pull request #1 from cbuckey-uda/different-oil
+
+                Change vegetable oil to canola oil
+        Notice that the commit message:
+         - Indicates that a pull request was merged
+         - Gives the number of the pull request (#1 here)
+         - Gives the branch the pull request was merged from
+            (cbuckey-uda/different-oil here).
+         - Contains the title of the pull request.
+        GitHub automatically creates a commit message like this whenever a pull
+        request is merged to make it easy to see pull requests in the commit
+        history. Even when the merge is a fast-forward merge, GitHub still
+        creates this commit.
 
 When would you want to make changes in a separate branch rather than directly in
 master?  What benefits does each approach have?
 
-    Fill in your answer here
+    I want to make changes in a separate branch when I collaborate on a project
+    with multiple people or when I make experimental changes which I am not sure
+    will work well and it is too early to add the changes to the master.
+    When you are working in the master, making changes is easier.
+    When you are working in a separate branch, you won't break the master and
+    you can add your changes to the master with collaborators' confirmation.
+
+    Modifying the Adventure Repository:
+        Fork this repository https://github.com/udacity/create-your-own-adventure.
+            cd version-control
+            git clone https://github.com/masaaki-git/create-your-own-adventure.git
+            cd create-your-own-adventure
+        You could make your changes directly to the master branch in your fork,
+        but when contributing to a public repository, it’s standard practice to
+        make the changes in a non-master branch within the fork. This way, you
+        can easily keep your master branch up-to-date with master of the
+        original repository, and merge changes from master into your branch when
+        you are ready.
+            git branch beer-jp
+            git checkout beer-jp
+        Modify japanese/beer/beer.md. Add japanese/beer2/.
+            git add japanese/beer/beer.md
+            git add japanese/beer2/
+            git commit -> message: Add a story of waiting for a beer
+            git push origin beer-jp
+        Make a pull request
+        Next, you should make a pull request containing your changes to the
+        original repository. To do this, click the "pull request" button from
+        your branch like you did before, but this time, leave the original
+        repository as the base.
+        To request auto-merging, leave a comment on the pull request containing
+        "@casey-collab". For example "Please review this, @casey-collab". Make
+        sure to leave the comment on the "Conversation" tab of the pull request,
+        not the "Files changed" tab.
+    Keeping a Fork Up-To-Date:
+        Suppose you fork the original repository on GitHub, clone your fork, and
+        then make a change in a new branch and push that change to your fork.
+        In the meantime, someone else changes the original repository on GitHub.
+        If there are merge conflicts between their change and your change, then
+        your pull request will not be able to be automatically merged. There is
+        no way to resolve merge conflicts on the GitHub site. You need to resolve
+        the conflicts within the clone on your computer.
+        You already have a remote set up called origin that points to you fork.
+        You'll still need to add a remote that points to the original repository.
+        Many people name this remote upstream. Adding and fetching the upstream
+        remote will add branches upstream/master into your local repository, so
+        that you can merge the upstream branch and your local branch. Add the
+        original repository as a remote in your clone.
+            git remote add upstream <URL of the original repository>
+            git remote add upstream https://github.com/udacity/create-your-own-adventure.git
+            (git fetch upstream)
+        Since you created your change in a separate branch, you can make you
+        master branch the same as the master in the original repository.
+        Pull the master branch from the original repository.
+            git checkout master
+            git pull upstream master
+        Merge the master branch into your branch.
+            git checkout <your branch>
+            git merge master <your branch>
+        Resolve the conflicts.
+            git add <file>
+            git commit
+        Push your branch to your fork.
+            git push origin <your branch>
+        Make master on the fork up-to-date.
+            git checkout master
+            git push origin master
